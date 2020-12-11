@@ -34,16 +34,20 @@ class DLList {
 
     // pop from tail
     removeTail() {
+        if(this.isEmpty()) return; 
         if (this.size() == 1){
+            let toRemove = this.tail; 
             this.head = null; 
             this.tail = null; 
             this.length = 0; 
+            return toRemove; 
         } else {
             let toRemove = this.tail; 
             this.tail = toRemove.next; 
             toRemove.next.prev = null; 
             toRemove.next = null; 
             this.length--; 
+            return toRemove; 
         }
 
     }
@@ -81,16 +85,20 @@ class DLList {
 
     // pop from head
     removeHead(){
+        if(this.isEmpty()) return; 
         if (this.size() == 1){
+            let toRemove = this.head
             this.head = null; 
             this.tail = null; 
             this.length = 0; 
+            return toRemove; 
         } else {
             let toRemove = this.head; 
             this.head = toRemove.prev; 
             toRemove.prev.next = null; 
             toRemove.prev = null; 
             this.length--; 
+            return toRemove; 
         }
     }
 }

@@ -18,6 +18,8 @@
 // required for the tower at position 15 to reach 
 // the listener at position 20.
 
+
+//for each user - figure out the distance between the two users. Then figure out which tower is closer to which user....????
 function minRange(listeners, towers){
     
     let i = 0, j = 0, max = 0, dist=0; 

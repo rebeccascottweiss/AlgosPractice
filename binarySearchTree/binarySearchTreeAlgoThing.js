@@ -1,4 +1,4 @@
-export class BSTNode {
+class BSTNode {
     constructor(val) {
         this.val = val;
         this.left = null;
@@ -6,8 +6,8 @@ export class BSTNode {
     }
 };
 
-
-export class BST {
+//node didn't like export for some reason? 
+class BST {
     constructor() {
         this.root = null;
     }
@@ -192,7 +192,7 @@ export class BST {
 
         if (tree === null) {
             this.root = node;
-            return;
+            return this;
         };
 
         // go left
@@ -200,7 +200,7 @@ export class BST {
             // check if null and add
             if (tree.left === null) {
                 tree.left = node;
-                return;
+                return this;
             } else {
                 // else recurse left
                 return this.insert(node, tree.left);
@@ -210,7 +210,7 @@ export class BST {
             // check if null and add
             if (tree.right === null) {
                 tree.right = node;
-                return;
+                return this;
             } else {
                 // else recurse right
                 return this.insert(node, tree.right);
@@ -272,28 +272,47 @@ export class BST {
 */
 
 
-function avgLevelBST (root, level = 0, levelArr = []) {
-    // so we want to know how many nodes exist in the tree AND the levels of each node
-    // to find the average
-    // so first thing we will do in every function call is increase our variables levelSums and nodeCount
+function avgLevelBST (root, level = 0, levelArr = [[0, 0]]) {
+    //root is 3
+    // level is 0
+    // levelArr is [[0,0]]
+    //checks to be sure there is an array value at the current level, if not creates one
+    if(!levelArr[level]){
+        levelArr[level] = [0, 0]; 
+    }
+
+    let sum = levelArr[level][0]; 
+    //sum is now 0
+    let count = levelArr[level][1]; 
+    //count is now 0
+    sum += root.val;
+    //sum is now 3 
+    levelArr[level] = [sum, ++count]
+    //levelArr is now [[3, 1]]
     
-    
+    //then you check for something to the nodes right or left
     if(root.right){
-        levelArr= avgLevelBST(root.right, level) // okay this is harder
+        //and reset the val... to the return of the function passing the original val in... 
+        levelArr= avgLevelBST(root.right, level + 1, levelArr)
+        //so you are passing the function (20, 1, [[3,1]])
     }
+
     if(root.left){
-        levelArr = avgLevelBST(root.left, level)
+        levelArr = avgLevelBST(root.left, level + 1, levelArr)
     }
 
-    //You input the node and the level
-
-    //You look down one from that level (left/right) and get the sum of those node.data values (so 9 + 20 or 15 + 7) and increment a count for every value found
-    // store it in an object? [[3,1],[29,2],[22,2]] so that you can continue to add to the level as you move to the other side of the tree? 
-    // but we will need to return the object to access it on the base level... 
-    // thanks, sorry this was hard af byyyyeeee
-
-    return levelArr;
+    return level == 0 ? levelArr.map((arr) => {
+        console.log("avg: " + arr[0]/arr[1]);
+        return arr[0]/arr[1]
+    }) : levelArr; 
 }
 
 var tree = new BST();
-tree.insert(7).insert(3).insert(15).insert(20).insert(9);
+tree.insert(new BSTNode(7));
+tree.insert(new BSTNode(3));
+tree.insert(new BSTNode(15));
+tree.insert(new BSTNode(9));
+tree.insert(new BSTNode(20));
+
+console.log(avgLevelBST(tree.root));
+ 
